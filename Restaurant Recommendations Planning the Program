@@ -1,0 +1,113 @@
+name_to_rating = {'Georgie Porgie': 87,
+ 'Queen St. Cafe': 82,
+ 'Dumplings R Us': 71,
+ 'Mexican Grill': 85,
+ 'Deep Fried Everything': 52}
+ 
+ price_to_names = {'$': ['Queen St. Cafe', 'Dumplings R Us', 'Deep Fried Everything'],
+ '$$': ['Mexican Grill'],
+ '$$$': ['Georgie Porgie'],
+ '$$$$': []}
+ 
+ cuisine_to_names = {'Canadian': ['Georgie Porgie'],
+ 'Pub Food': ['Georgie Porgie', 'Deep Fried Everything'],
+ 'Malaysian': ['Queen St. Cafe'],
+ 'Thai': ['Queen St. Cafe'],
+ 'Chinese': ['Dumplings R Us'],
+ 'Mexican': ['Mexican Grill']}
+ 
+ def filter_by_cuisine(names_matching_price, cuisine_to_names, cuisines_list):
+    """ (list of str, dict of {str: list of str}, list of str) -> list of str
+
+    >>> names = ['Queen St. Cafe', 'Dumplings R Us', 'Deep Fried Everything']
+    >>> cuis = 'Canadian': ['Georgie Porgie'],
+     'Pub Food': ['Georgie Porgie', 'Deep Fried Everything'],
+     'Malaysian': ['Queen St. Cafe'],
+     'Thai': ['Queen St. Cafe'],
+     'Chinese': ['Dumplings R Us'],
+     'Mexican': ['Mexican Grill']}
+    >>> cuisines = ['Chinese', 'Thai']
+    >>> filter_by_cuisine(names, cuis, cuisines)
+    ['Queen St. Cafe', 'Dumplings R Us']
+    """
+    list_a = []
+    list_b = []
+    
+    for item in cuisines_list:
+        if item in cuisine_to_names:
+            for cuis in cuisine_to_names[item]:
+                if not cuis in list_a:
+                    list_a.append(cuis)
+    
+    for item in names_matching_price:
+        if item in list_a:
+            list_b.append(item)
+            
+    return list_b
+    
+    def build_rating_list(name_to_rating, names_final):
+    """ (dict of {str: int}, list of str) -> list of list of [int, str]
+
+    Return a list of [rating%, restaurant name], sorted by rating%
+
+    >>> name_to_rating = {'Georgie Porgie': 87,
+     'Queen St. Cafe': 82,
+     'Dumplings R Us': 71,
+     'Mexican Grill': 85,
+     'Deep Fried Everything': 52}
+    >>> names = ['Queen St. Cafe', 'Dumplings R Us']
+    [[82, 'Queen St. Cafe'], [71, 'Dumplings R Us']]
+    """
+    list_a = []
+    
+    for item in names_final:
+        if item in name_to_rating:
+            list_a.append([int(name_to_rating[item]),item])
+    
+    list_a.sort(reverse=True)
+    return list_a
+    
+    names = ['Queen St. Cafe', 'Dumplings R Us', 'Deep Fried Everything']
+    
+cuis = {'Canadian': ['Georgie Porgie'],
+     'Pub Food': ['Georgie Porgie', 'Deep Fried Everything'],
+     'Malaysian': ['Queen St. Cafe'],
+     'Thai': ['Queen St. Cafe'],
+     'Chinese': ['Dumplings R Us'],
+     'Mexican': ['Mexican Grill']}
+cuisines = ['Chinese', 'Thai']
+filter_by_cuisine(names, cuis, cuisines)
+
+name_to_rating = {'Georgie Porgie': 87,
+     'Queen St. Cafe': 82,
+     'Dumplings R Us': 71,
+     'Mexican Grill': 85,
+     'Deep Fried Everything': 52}
+names = ['Queen St. Cafe', 'Dumplings R Us']
+build_rating_list(name_to_rating, names)
+
+
+def recommend(price, cuisines_list):
+    """(file open for reading, str, list of str) -> list of [int, str] list
+
+    Find restaurants in file that are priced according to price and that are
+    tagged with any of the items in cuisines_list.  Return a list of lists of
+    the form [rating%, restaurant name], sorted by rating%.
+    """
+
+    # Look for price or cuisines first?
+    # Price: look up the list of restaurant names for the requested price.
+    names_matching_price = price_to_names[price]
+
+    # Now we have a list of restaurants in the right price range.
+    # Need a new list of restaurants that serve one of the cuisines.
+    names_final = filter_by_cuisine(names_matching_price, cuisine_to_names, cuisines_list)
+
+    # Now we have a list of restaurants that are in the right price range and serve the requested cuisine.
+    # Need to look at ratings and sort this list.
+    result = build_rating_list(name_to_rating, names_final)
+
+    # We're done!  Return that sorted list.
+    return result
+    
+recommend('$',['Chinese','Mexican','Pub Food','Thai','Malaysian','Canadian'])
