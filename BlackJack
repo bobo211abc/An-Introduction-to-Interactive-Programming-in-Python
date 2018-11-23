@@ -110,7 +110,7 @@ def deal():
     global outcome, in_play, deck, player_hand, dealer_hand, dealer_score
     
     if in_play:
-        outcome = "Player lost because of re-deal! New deal?"
+        outcome = "New deal!"
         in_play = False
         dealer_score += 1
         deal()
@@ -130,6 +130,8 @@ def deal():
         print "Player: " + str(player_hand)
         print "Dealer: " + str(dealer_hand)
         
+        outcome = "Your cards value " + str(player_hand.get_value())
+        
         in_play = True
         
 
@@ -141,6 +143,7 @@ def hit():
         if player_hand.get_value() <= 21:
             player_hand.add_card(deck.deal_card())
         print "Player: " + str(player_hand)
+        outcome = "Your cards value " + str(player_hand.get_value())
         
         if player_hand.get_value() > 21:
             outcome = "You have busted. New deal?"
@@ -160,15 +163,12 @@ def stand():
         print "Dealer: " + str(dealer_hand)
     
         if dealer_hand.get_value() > 21 or player_hand.get_value() > dealer_hand.get_value():
-            outcome = "You win!"
-            print "You win!"
+            outcome = "You win! You: " + str(player_hand.get_value()) + " Comp: " + str(dealer_hand.get_value())
             player_score += 1
         elif player_hand.get_value() == dealer_hand.get_value():
-            outcome = "Tie"
-            print "Tie"
+            outcome = "Tie! You: " + str(player_hand.get_value()) + " Comp: " + str(dealer_hand.get_value())
         else:
-            outcome = "You lose!"
-            print "You lose!"
+            outcome = "You lose! You: " + str(player_hand.get_value()) + " Comp: " + str(dealer_hand.get_value())
             dealer_score += 1
         in_play = False
 
